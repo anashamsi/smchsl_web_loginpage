@@ -1,8 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loginui/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
   runApp(MyApp());
 }
+
+TextEditingController _username = TextEditingController();
+TextEditingController _password = TextEditingController();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -43,7 +52,8 @@ class MyApp extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 10),
+
                 Text(
                   'Login to your account',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -56,6 +66,7 @@ class MyApp extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8),
                   child: TextField(
+                    controller: _username,
                     style: TextStyle(fontSize: 14),
                     decoration: InputDecoration(
                       isDense: true,
@@ -76,6 +87,7 @@ class MyApp extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0, right: 8),
                   child: TextField(
+                    controller: _password,
                     obscureText: true,
                     style: TextStyle(fontSize: 14),
                     decoration: InputDecoration(
@@ -118,7 +130,9 @@ class MyApp extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
 
                         child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            authentication();
+                          },
                           icon: Icon(
                             Icons.arrow_right,
                             color: Colors.white,
@@ -168,5 +182,23 @@ class MyApp extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+void authentication() async {
+  try {
+    final credential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+          email: "anasshamsi500@gmail.com",
+          password: "123456",
+        );
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'weak-password') {
+      print('weak password');
+    } else if (e.code == 'email-already-in-use') {
+      print('email already in use');
+    }
+  } catch (e) {
+    print(e);
   }
 }
