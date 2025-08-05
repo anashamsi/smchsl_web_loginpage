@@ -1,13 +1,14 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:loginui/Dashboard.dart';
 import 'package:loginui/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.android);
-  runApp(MyApp());
+  runApp(Dashboard());
 }
 
 TextEditingController _username = TextEditingController();
@@ -71,7 +72,10 @@ class MyApp extends StatelessWidget {
                     decoration: InputDecoration(
                       isDense: true,
                       prefixIcon: Icon(Icons.person, color: Colors.grey),
-                      hint: Text('Username'),
+                      hint: Text(
+                        'Username',
+                        style: TextStyle(color: Colors.grey),
+                      ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.blue),
                       ),
@@ -94,7 +98,10 @@ class MyApp extends StatelessWidget {
                       isDense: true,
 
                       prefixIcon: Icon(Icons.lock, color: Colors.grey),
-                      hint: Text('Password'),
+                      hint: Text(
+                        'Password',
+                        style: TextStyle(color: Colors.grey),
+                      ),
 
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey),
